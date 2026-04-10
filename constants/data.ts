@@ -5,4 +5,4 @@ export const tabs = [
   { name: "subscription", title: "Subscriptions", icons: icons.wallet },
   { name: "insights", title: "Insights", icons: icons.activity },
   { name: "settings", title: "Settings", icons: icons.setting },
-];
+] as const;
