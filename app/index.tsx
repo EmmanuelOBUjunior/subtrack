@@ -14,17 +14,23 @@ export default function App() {
       >
         Go to Onboarding
       </Link>
-      <Link
-        href="/(auth)/sign-in"
-        className="mt-4 p-4 bg-primary text-white rounded"
-      >
+      <Link href="/sign-in" className="mt-4 p-4 bg-primary text-white rounded">
         Go to Sign In
       </Link>
+      <Link href="/sign-up" className="mt-4 p-4 bg-primary text-white rounded">
+        Go to Sign Up
+      </Link>
       <Link
-        href="/(auth)/sign-up"
+        href="/subscriptions/spotify"
         className="mt-4 p-4 bg-primary text-white rounded"
       >
-        Go to Sign Up
+        Spotify Subscription
+      </Link>
+      <Link
+        href="/subscriptions/[id]"
+        className="mt-4 p-4 bg-primary text-white rounded"
+      >
+        Claude Max Subscription
       </Link>
     </View>
   );
