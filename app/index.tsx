@@ -27,7 +27,10 @@ export default function App() {
         Spotify Subscription
       </Link>
       <Link
-        href="/subscriptions/[id]"
+        href={{
+          pathname: "/subscriptions/[id]",
+          params: { id: "claude" },
+        }}
         className="mt-4 p-4 bg-primary text-white rounded"
       >
         Claude Max Subscription

@@ -6,7 +6,7 @@ const SubscriptionDetails = () => {
   const { id } = useLocalSearchParams();
   return (
     <View>
-      <Text> SubscriptionDetails for {id} </Text>
+      <Text> Subscription Details for {id} </Text>
     </View>
   );
 };
