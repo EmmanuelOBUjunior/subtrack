@@ -1,9 +1,12 @@
 import { Tabs } from "expo-router";
-import React from "react";
 
 const TabLayout = () => (
-  <Tabs>
+  <Tabs screenOptions={{ headerShown: false }}>
     <Tabs.Screen name="index" options={{ title: "Home" }} />
+    <Tabs.Screen name="insights" options={{ title: "Insights" }} />
+    <Tabs.Screen name="subscription" options={{ title: "Subscriptions" }} />
+    <Tabs.Screen name="settings" options={{ title: "Settings" }} />
+    <Tabs.Screen name="subscriptions/[id]" options={{ href: null }} />
   </Tabs>
 );
 
