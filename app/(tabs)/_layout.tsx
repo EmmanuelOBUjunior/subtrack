@@ -3,8 +3,10 @@ import clsx from "clsx";
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const TabLayout = () => {
+  const insets = useSafeAreaInsets();
   const TabBarIcon = ({ focused, icon }: TabIconProps) => {
     return (
       <View className="tabs-icon">
