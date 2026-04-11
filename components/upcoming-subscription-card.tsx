@@ -1,11 +1,14 @@
-import { Text, View } from "react-native";
+import { Image, View } from "react-native";
 
 const UpcomingSubscriptionCard = ({
   data: { name, price, daysLeft, icon },
 }: any) => {
   return (
-    <View>
-      <Text>{name}</Text>
+    <View className="upcoming-card">
+      <View className="upcoming-row">
+        <Image className="upcoming-icon" source={icon} />
+      </View>
+      <View></View>
     </View>
   );
 };
