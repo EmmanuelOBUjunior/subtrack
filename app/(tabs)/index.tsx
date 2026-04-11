@@ -3,6 +3,7 @@ import { icons } from "@/constants/icons";
 import image from "@/constants/image";
 import "@/global.css";
 import { formatCurrency } from "@/libs/utils";
+import dayjs from "dayjs";
 import { styled } from "nativewind";
 import { Image, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
@@ -24,6 +25,9 @@ export default function App() {
         <View className="home-balance-row">
           <Text className="home-balance-amount">
             {formatCurrency(HOME_BALANCE.amount)}
+          </Text>
+          <Text className="home-balance-date">
+            {dayjs(HOME_BALANCE.nextRenewalDate).format("MM/DD/YYYY")}
           </Text>
         </View>
       </View>
