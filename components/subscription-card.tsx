@@ -87,7 +87,7 @@ const SubscriptionCard = ({
             </View>
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Status</Text>
+                <Text className="sub-label">Status:</Text>
                 <Text
                   className="sub-label"
                   numberOfLines={1}
