@@ -84,6 +84,7 @@ export default function App() {
         ListEmptyComponent={
           <Text className="home-empty-state">No subscriptions added yet</Text>
         }
+        contentContainerClassName="pb-20"
       />
     </SafeAreaView>
   );

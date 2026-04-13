@@ -53,7 +53,7 @@ const SubscriptionCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Payment:</Text>
                 <Text
-                  className="sub-label"
+                  className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -65,7 +65,7 @@ const SubscriptionCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Category:</Text>
                 <Text
-                  className="sub-label"
+                  className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -77,7 +77,7 @@ const SubscriptionCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Started:</Text>
                 <Text
-                  className="sub-label"
+                  className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -89,7 +89,7 @@ const SubscriptionCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Status:</Text>
                 <Text
-                  className="sub-label"
+                  className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -101,7 +101,7 @@ const SubscriptionCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Renewal Date:</Text>
                 <Text
-                  className="sub-label"
+                  className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
