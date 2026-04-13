@@ -11,7 +11,7 @@ import "@/global.css";
 import { formatCurrency } from "@/libs/utils";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
-import { Image, Text, View } from "react-native";
+import { FlatList, Image, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
@@ -39,7 +39,15 @@ export default function App() {
       </View>
       <View>
         <ListHeading title="Upcoming" />
-        <UpcomingSubscriptionCard data={UPCOMING_SUBSCRIPTIONS[0]} />
+        <FlatList
+          data={UPCOMING_SUBSCRIPTIONS}
+          renderItem={({ item }) => <UpcomingSubscriptionCard {...item} />}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          ListEmptyComponent={
+            <Text className="home-empty-state">No upcoming renewals yet</Text>
+          }
+        />
       </View>
       <View>
         <ListHeading title="All Subscriptions" />

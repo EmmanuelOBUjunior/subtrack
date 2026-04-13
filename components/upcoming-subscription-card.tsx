@@ -2,8 +2,12 @@ import { formatCurrency } from "@/libs/utils";
 import { Image, Text, View } from "react-native";
 
 const UpcomingSubscriptionCard = ({
-  data: { name, price, daysLeft, icon, currency },
-}: any) => {
+  name,
+  price,
+  daysLeft,
+  icon,
+  currency,
+}: UpcomingSubscriptionCardProps) => {
   return (
     <View className="upcoming-card">
       <View className="upcoming-row">
