@@ -53,7 +53,7 @@ export default function App() {
       </View>
       <View>
         <ListHeading title="All Subscriptions" />
-        <SubscriptionCard {...HOME_SUBSCRIPTIONS} />
+        <SubscriptionCard {...HOME_SUBSCRIPTIONS[0]} />
       </View>
     </SafeAreaView>
   );
