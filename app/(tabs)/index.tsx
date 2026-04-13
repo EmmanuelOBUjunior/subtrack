@@ -1,4 +1,5 @@
 import ListHeading from "@/components/list-heading";
+import SubscriptionCard from "@/components/subscription-card";
 import UpcomingSubscriptionCard from "@/components/upcoming-subscription-card";
 import {
   HOME_BALANCE,
@@ -51,6 +52,7 @@ export default function App() {
       </View>
       <View>
         <ListHeading title="All Subscriptions" />
+        <SubscriptionCard />
       </View>
     </SafeAreaView>
   );
