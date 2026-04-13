@@ -15,6 +15,7 @@ const SubscriptionCard = ({
   billing,
   renewalDate,
   plan,
+  paymentMethod,
 }: SubscriptionCardProps) => {
   return (
     <Pressable
@@ -39,6 +40,22 @@ const SubscriptionCard = ({
           <Text className="sub-billing">{billing}</Text>
         </View>
       </View>
+      {expanded && (
+        <View className="sub-body">
+          <View className="sub-details">
+            <View className="sub-row-copy">
+              <Text className="sub-label">Payment:</Text>
+              <Text
+                className="sub-label"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {paymentMethod?.trim()}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
     </Pressable>
   );
 };
