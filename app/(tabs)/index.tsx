@@ -70,6 +70,13 @@ export default function App() {
               }
             />
           )}
+          extraData={expandedSubscriptionId}
+          ItemSeparatorComponent={() => <View className="h-4" />}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          ListEmptyComponent={
+            <Text className="home-empty-state">No subscriptions added yet</Text>
+          }
         />
       </View>
     </SafeAreaView>
