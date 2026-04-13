@@ -1,24 +1,25 @@
 import "@/global.css";
 import { useAuthSignIn } from "@/hooks/useAuthSignIn";
 import {
-    validateEmail,
-    validatePassword,
-    validateVerificationCode,
+  validateEmail,
+  validatePassword,
+  validateVerificationCode,
 } from "@/libs/validation";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { styled } from "nativewind";
 import { useMemo, useState } from "react";
 import {
-    ActivityIndicator,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableWithoutFeedback,
-    View,
+  ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
@@ -36,6 +37,7 @@ export default function SignInScreen() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [codeError, setCodeError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Validate email on blur
   const handleEmailBlur = () => {
@@ -244,24 +246,47 @@ export default function SignInScreen() {
 
               {/* Password Field */}
               <View>
-                <Text className="font-sans-semibold text-sm text-foreground mb-2">
-                  Password
-                </Text>
-                <TextInput
-                  className={`border rounded-lg px-4 py-3 font-sans-regular bg-card text-foreground text-base ${
+                <View className="flex-row items-center justify-between mb-2">
+                  <Text className="font-sans-semibold text-sm text-foreground">
+                    Password
+                  </Text>
+                  <Link href="/(auth)/forgot-password" asChild>
+                    <Pressable>
+                      <Text className="text-accent font-sans-semibold text-xs">
+                        Forgot?
+                      </Text>
+                    </Pressable>
+                  </Link>
+                </View>
+                <View
+                  className={`flex-row items-center border rounded-lg px-4 py-3 bg-card ${
                     passwordError ? "border-destructive" : "border-border"
                   }`}
-                  placeholder="••••••••"
-                  placeholderTextColor="#999999"
-                  secureTextEntry
-                  value={state.password}
-                  onChangeText={(val) => {
-                    updateField("password", val);
-                    setPasswordError(null);
-                  }}
-                  onBlur={handlePasswordBlur}
-                  editable={!state.isLoading}
-                />
+                >
+                  <TextInput
+                    className="flex-1 font-sans-regular text-foreground text-base"
+                    placeholder="••••••••"
+                    placeholderTextColor="#999999"
+                    secureTextEntry={!showPassword}
+                    value={state.password}
+                    onChangeText={(val) => {
+                      updateField("password", val);
+                      setPasswordError(null);
+                    }}
+                    onBlur={handlePasswordBlur}
+                    editable={!state.isLoading}
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    disabled={state.isLoading}
+                  >
+                    <MaterialCommunityIcons
+                      name={showPassword ? "eye" : "eye-off"}
+                      size={20}
+                      color="#999999"
+                    />
+                  </Pressable>
+                </View>
                 {passwordError && (
                   <Text className="text-destructive text-xs font-sans-regular mt-2">
                     {passwordError}

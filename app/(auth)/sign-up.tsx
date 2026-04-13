@@ -6,6 +6,7 @@ import {
     validatePasswordMatch,
     validateVerificationCode,
 } from "@/libs/validation";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { styled } from "nativewind";
 import { useMemo, useState } from "react";
@@ -34,6 +35,8 @@ export default function SignUpScreen() {
     string | null
   >(null);
   const [codeError, setCodeError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Validate email on blur
   const handleEmailBlur = () => {
@@ -256,21 +259,35 @@ export default function SignUpScreen() {
                 <Text className="font-sans-semibold text-sm text-foreground mb-2">
                   Password
                 </Text>
-                <TextInput
-                  className={`border rounded-lg px-4 py-3 font-sans-regular bg-card text-foreground text-base ${
+                <View
+                  className={`flex-row items-center border rounded-lg px-4 py-3 bg-card ${
                     passwordError ? "border-destructive" : "border-border"
                   }`}
-                  placeholder="••••••••"
-                  placeholderTextColor="#999999"
-                  secureTextEntry
-                  value={state.password}
-                  onChangeText={(val) => {
-                    updateField("password", val);
-                    setPasswordError(null);
-                  }}
-                  onBlur={handlePasswordBlur}
-                  editable={!state.isLoading}
-                />
+                >
+                  <TextInput
+                    className="flex-1 font-sans-regular text-foreground text-base"
+                    placeholder="••••••••"
+                    placeholderTextColor="#999999"
+                    secureTextEntry={!showPassword}
+                    value={state.password}
+                    onChangeText={(val) => {
+                      updateField("password", val);
+                      setPasswordError(null);
+                    }}
+                    onBlur={handlePasswordBlur}
+                    editable={!state.isLoading}
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    disabled={state.isLoading}
+                  >
+                    <MaterialCommunityIcons
+                      name={showPassword ? "eye" : "eye-off"}
+                      size={20}
+                      color="#999999"
+                    />
+                  </Pressable>
+                </View>
                 {passwordError && (
                   <Text className="text-destructive text-xs font-sans-regular mt-2">
                     {passwordError}
@@ -287,23 +304,37 @@ export default function SignUpScreen() {
                 <Text className="font-sans-semibold text-sm text-foreground mb-2">
                   Confirm Password
                 </Text>
-                <TextInput
-                  className={`border rounded-lg px-4 py-3 font-sans-regular bg-card text-foreground text-base ${
+                <View
+                  className={`flex-row items-center border rounded-lg px-4 py-3 bg-card ${
                     confirmPasswordError
                       ? "border-destructive"
                       : "border-border"
                   }`}
-                  placeholder="••••••••"
-                  placeholderTextColor="#999999"
-                  secureTextEntry
-                  value={state.confirmPassword}
-                  onChangeText={(val) => {
-                    updateField("confirmPassword", val);
-                    setConfirmPasswordError(null);
-                  }}
-                  onBlur={handleConfirmPasswordBlur}
-                  editable={!state.isLoading}
-                />
+                >
+                  <TextInput
+                    className="flex-1 font-sans-regular text-foreground text-base"
+                    placeholder="••••••••"
+                    placeholderTextColor="#999999"
+                    secureTextEntry={!showConfirmPassword}
+                    value={state.confirmPassword}
+                    onChangeText={(val) => {
+                      updateField("confirmPassword", val);
+                      setConfirmPasswordError(null);
+                    }}
+                    onBlur={handleConfirmPasswordBlur}
+                    editable={!state.isLoading}
+                  />
+                  <Pressable
+                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                    disabled={state.isLoading}
+                  >
+                    <MaterialCommunityIcons
+                      name={showConfirmPassword ? "eye" : "eye-off"}
+                      size={20}
+                      color="#999999"
+                    />
+                  </Pressable>
+                </View>
                 {confirmPasswordError && (
                   <Text className="text-destructive text-xs font-sans-regular mt-2">
                     {confirmPasswordError}
