@@ -1,9 +1,9 @@
 import "@/global.css";
 import { useAuth } from "@clerk/expo";
-import { Redirect, Stack } from "expo-router";
+import { Redirect } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 
-export default function AuthLayout() {
+export default function RootIndex() {
   const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
@@ -14,13 +14,9 @@ export default function AuthLayout() {
     );
   }
 
-  // if (!isSignedIn) {
-  //   return <Redirect href="/onboarding" />;
-  // }
-
-  if (isSignedIn) {
-    return <Redirect href="/(tabs)" />;
+  if (!isSignedIn) {
+    return <Redirect href="/(auth)/sign-in" />;
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return <Redirect href="/(tabs)" />;
 }
