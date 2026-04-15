@@ -1,15 +1,9 @@
+import SubscriptionCard from "@/components/subscription-card";
 import { HOME_SUBSCRIPTIONS } from "@/constants/data";
 import { styled } from "nativewind";
 import React, { useMemo, useState } from "react";
-import {
-  FlatList,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, Text, TextInput, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import SubscriptionCard from "@/components/subscription-card";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
@@ -27,7 +21,7 @@ const Subscription = () => {
       (subscription) =>
         subscription.name.toLowerCase().includes(query) ||
         subscription.category?.toLowerCase().includes(query) ||
-        subscription.plan?.toLowerCase().includes(query)
+        subscription.plan?.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 
