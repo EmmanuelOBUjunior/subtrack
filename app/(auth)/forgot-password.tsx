@@ -1,25 +1,25 @@
 import "@/global.css";
 import { useAuthForgotPassword } from "@/hooks/useAuthForgotPassword";
 import {
-    validateEmail,
-    validatePassword,
-    validatePasswordMatch,
-    validateVerificationCode,
+  validateEmail,
+  validatePassword,
+  validatePasswordMatch,
+  validateVerificationCode,
 } from "@/libs/validation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styled } from "nativewind";
 import { useMemo, useState } from "react";
 import {
-    ActivityIndicator,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableWithoutFeedback,
-    View,
+  ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
@@ -233,7 +233,7 @@ export default function ForgotPasswordScreen() {
                     Verification Code
                   </Text>
                   <TextInput
-                    className={`border rounded-lg px-4 py-3 font-sans-regular bg-card text-foreground text-base text-center text-lg tracking-widest ${
+                    className={`border rounded-lg px-4 py-3 font-sans-regular bg-card text-foreground text-center text-lg tracking-widest ${
                       codeError ? "border-destructive" : "border-border"
                     }`}
                     placeholder="000000"

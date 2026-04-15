@@ -67,12 +67,12 @@ const Onboarding = () => {
 
         {/* CTA Buttons */}
         <View className="gap-3">
-          <Link href="/sign-in" asChild>
+          <Link href="/(auth)/sign-in" asChild>
             <Pressable className="auth-button">
               <Text className="auth-button-text">Get Started</Text>
             </Pressable>
           </Link>
-          <Link href="/sign-up" asChild>
+          <Link href="/(auth)/sign-up" asChild>
             <Pressable className="auth-secondary-button">
               <Text className="auth-secondary-button-text">Create Account</Text>
             </Pressable>

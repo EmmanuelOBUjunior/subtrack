@@ -14,6 +14,10 @@ export default function AuthLayout() {
     );
   }
 
+  // if (!isSignedIn) {
+  //   return <Redirect href="/onboarding" />;
+  // }
+
   if (isSignedIn) {
     return <Redirect href="/(tabs)" />;
   }
