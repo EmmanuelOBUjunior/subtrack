@@ -1,10 +1,10 @@
 import { HOME_SUBSCRIPTIONS } from "@/constants/data";
-import { styled } from "nativewind";
 import dayjs from "dayjs";
+import { styled } from "nativewind";
 import React, { useMemo } from "react";
 import { FlatList, ScrollView, Text, View } from "react-native";
-import Svg, { G, Line, Circle } from "react-native-svg";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+import Svg, { Circle, G, Line } from "react-native-svg";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
@@ -47,9 +47,7 @@ const Insights = () => {
       }
     });
 
-    return Array.from(categoryMap.values()).sort(
-      (a, b) => b.amount - a.amount
-    );
+    return Array.from(categoryMap.values()).sort((a, b) => b.amount - a.amount);
   }, []);
 
   // Calculate monthly spending for the last 12 months
@@ -105,7 +103,7 @@ const Insights = () => {
     });
 
     return events.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
   }, []);
 
@@ -176,7 +174,10 @@ const Insights = () => {
                     <G key={`month-${data.month}-${index}`}>
                       {index > 0 && (
                         <Line
-                          x1={40 + ((index - 1) / (monthlySpending.length - 1)) * 310}
+                          x1={
+                            40 +
+                            ((index - 1) / (monthlySpending.length - 1)) * 310
+                          }
                           y1={
                             160 -
                             ((monthlySpending.at(index - 1)?.amount ?? 0) /
@@ -223,7 +224,8 @@ const Insights = () => {
                         {category.category}
                       </Text>
                       <Text className="text-xs text-muted-foreground">
-                        {category.count} subscription{category.count === 1 ? "" : "s"}
+                        {category.count} subscription
+                        {category.count === 1 ? "" : "s"}
                       </Text>
                     </View>
                     <Text className="font-sans-bold text-primary ml-2">
