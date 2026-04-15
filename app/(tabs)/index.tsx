@@ -8,6 +8,7 @@ import {
 } from "@/constants/data";
 import { icons } from "@/constants/icons";
 import "@/global.css";
+import { posthog } from "@/libs/posthog";
 import { formatCurrency } from "@/libs/utils";
 import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
@@ -27,6 +28,19 @@ export default function App() {
   const displayName =
     user?.firstName || user?.emailAddresses[0]?.emailAddress || "User";
   const userInitial = displayName.charAt(0).toUpperCase();
+
+  const handleSubscriptionPress = (id: string, name: string) => {
+    setExpandedSubscriptionId((currentId) => {
+      const isExpanding = currentId !== id;
+      if (isExpanding) {
+        posthog.capture("subscription_card_expanded", {
+          subscription_id: id,
+          subscription_name: name,
+        });
+      }
+      return isExpanding ? id : null;
+    });
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
@@ -86,11 +100,7 @@ export default function App() {
           <SubscriptionCard
             {...item}
             expanded={expandedSubscriptionId === item.id}
-            onPress={() =>
-              setExpandedSubscriptionId((currentId) =>
-                currentId === item.id ? null : item.id,
-              )
-            }
+            onPress={() => handleSubscriptionPress(item.id, item.name)}
           />
         )}
         extraData={expandedSubscriptionId}

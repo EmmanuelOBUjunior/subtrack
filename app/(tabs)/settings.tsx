@@ -1,4 +1,5 @@
 import "@/global.css";
+import { posthog } from "@/libs/posthog";
 import { useClerk, useUser } from "@clerk/expo";
 import { styled } from "nativewind";
 import React, { useState } from "react";
@@ -37,6 +38,8 @@ const Settings = () => {
         onPress: async () => {
           setIsLoading(true);
           try {
+            posthog.capture("user_signed_out");
+            posthog.reset();
             await signOut();
           } catch (error) {
             console.error("Sign out error:", error);

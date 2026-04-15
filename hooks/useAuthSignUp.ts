@@ -1,4 +1,5 @@
 import { getClerkErrorMessage } from "@/libs/validation";
+import { posthog } from "@/libs/posthog";
 import { useAuth, useSignUp } from "@clerk/expo";
 import { type Href, useRouter } from "expo-router";
 import { useState } from "react";
@@ -75,6 +76,15 @@ export const useAuthSignUp = () => {
 
       // Complete sign-up and finalize session
       if (signUp?.status === "complete") {
+        const userId = signUp.createdUserId ?? state.email;
+
+        posthog.identify(userId, {
+          $set_once: {
+            first_sign_up_date: new Date().toISOString(),
+          },
+        });
+        posthog.capture("user_signed_up");
+
         await signUp.finalize({
           navigate: ({ session, decorateUrl }) => {
             if (session?.currentTask) {

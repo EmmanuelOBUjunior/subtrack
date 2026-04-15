@@ -1,4 +1,5 @@
 import { getClerkErrorMessage } from "@/libs/validation";
+import { posthog } from "@/libs/posthog";
 import { useSignIn } from "@clerk/expo";
 import { type Href, useRouter } from "expo-router";
 import { useState } from "react";
@@ -31,6 +32,11 @@ export const useAuthSignIn = () => {
     setState((prev) => ({ ...prev, [field]: value, error: null }));
   };
 
+  const identifyAndCapture = (userId: string) => {
+    posthog.identify(userId);
+    posthog.capture("user_signed_in");
+  };
+
   const submitSignIn = async (email: string, password: string) => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
@@ -47,7 +53,9 @@ export const useAuthSignIn = () => {
       }
 
       if (signIn?.status === "complete") {
-        // Successfully signed in, finalize and navigate
+        const userId = signIn.createdSessionId ?? state.email;
+        identifyAndCapture(userId);
+
         await signIn.finalize({
           navigate: ({ session, decorateUrl }) => {
             if (session?.currentTask) {
@@ -110,6 +118,9 @@ export const useAuthSignIn = () => {
       await signIn?.mfa.verifyEmailCode({ code });
 
       if (signIn?.status === "complete") {
+        const userId = signIn.createdSessionId ?? state.email;
+        identifyAndCapture(userId);
+
         await signIn.finalize({
           navigate: ({ session, decorateUrl }) => {
             if (session?.currentTask) {

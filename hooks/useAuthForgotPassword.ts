@@ -1,4 +1,5 @@
 import { getClerkErrorMessage } from "@/libs/validation";
+import { posthog } from "@/libs/posthog";
 import { useSignIn } from "@clerk/expo";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -47,6 +48,8 @@ export const useAuthForgotPassword = () => {
         identifier: email,
       });
 
+      posthog.capture("forgot_password_requested");
+
       setState((prev) => ({
         ...prev,
         email,
@@ -92,6 +95,8 @@ export const useAuthForgotPassword = () => {
       await signIn?.resetPassword({
         password: newPassword,
       });
+
+      posthog.capture("password_reset_completed");
 
       setState((prev) => ({
         ...prev,
