@@ -38,9 +38,13 @@ const Settings = () => {
         onPress: async () => {
           setIsLoading(true);
           try {
-            posthog.capture("user_signed_out");
-            posthog.reset();
+            if (posthog) {
+              posthog.capture("user_signed_out");
+            }
             await signOut();
+            if (posthog) {
+              posthog.reset();
+            }
           } catch (error) {
             console.error("Sign out error:", error);
             setIsLoading(false);
@@ -96,21 +100,21 @@ const Settings = () => {
             APP
           </Text>
           <View className="bg-card rounded-lg border border-border overflow-hidden">
-            <Pressable className="px-4 py-3 border-b border-border">
+            <View className="px-4 py-3 border-b border-border">
               <Text className="font-sans-regular text-base text-foreground">
                 About
               </Text>
-            </Pressable>
-            <Pressable className="px-4 py-3 border-b border-border">
+            </View>
+            <View className="px-4 py-3 border-b border-border">
               <Text className="font-sans-regular text-base text-foreground">
                 Privacy Policy
               </Text>
-            </Pressable>
-            <Pressable className="px-4 py-3">
+            </View>
+            <View className="px-4 py-3">
               <Text className="font-sans-regular text-base text-foreground">
                 Terms of Service
               </Text>
-            </Pressable>
+            </View>
           </View>
         </View>
 

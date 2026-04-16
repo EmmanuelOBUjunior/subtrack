@@ -2,7 +2,7 @@ import { HOME_SUBSCRIPTIONS } from "@/constants/data";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import React, { useMemo } from "react";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import Svg, { Circle, G, Line } from "react-native-svg";
 
@@ -52,20 +52,22 @@ const Insights = () => {
 
   // Calculate monthly spending for the last 12 months
   const monthlySpending = useMemo(() => {
+    // Calculate a single projected monthly total since subscriptions are recurring with no end date
+    const projectedMonthlyTotal = HOME_SUBSCRIPTIONS.reduce((sum, sub) => {
+      const monthlyAmount =
+        sub.billing === "Yearly" ? sub.price / 12 : sub.price;
+      return sum + monthlyAmount;
+    }, 0);
+
+    // Generate months with the same projected total
     const months: MonthlySpending[] = [];
     for (let i = 11; i >= 0; i--) {
       const date = dayjs().subtract(i, "month");
       const month = date.format("MMM");
 
-      const total = HOME_SUBSCRIPTIONS.reduce((sum, sub) => {
-        const monthlyAmount =
-          sub.billing === "Yearly" ? sub.price / 12 : sub.price;
-        return sum + monthlyAmount;
-      }, 0);
-
       months.push({
         month,
-        amount: total,
+        amount: projectedMonthlyTotal,
       });
     }
     return months;
@@ -75,7 +77,7 @@ const Insights = () => {
   const historyEvents = useMemo(() => {
     const events: Array<{
       id: string;
-      type: "created" | "renewed" | "expires";
+      type: "created" | "renewed";
       name: string;
       date: string;
       amount: number;
@@ -248,11 +250,16 @@ const Insights = () => {
             <Text className="text-lg font-sans-bold text-primary mb-4">
               Recent Activity
             </Text>
-            <FlatList
-              data={historyEvents.slice(0, 10)}
-              scrollEnabled={false}
-              renderItem={({ item }) => (
-                <View className="bg-card rounded-2xl p-4 mb-3 border border-border flex-row items-center justify-between">
+            {historyEvents.length === 0 ? (
+              <Text className="text-center text-muted-foreground">
+                No activity yet
+              </Text>
+            ) : (
+              historyEvents.slice(0, 10).map((item) => (
+                <View
+                  key={item.id}
+                  className="bg-card rounded-2xl p-4 mb-3 border border-border flex-row items-center justify-between"
+                >
                   <View className="flex-1">
                     <Text className="font-sans-semibold text-primary mb-1">
                       {item.name}
@@ -260,7 +267,6 @@ const Insights = () => {
                     <Text className="text-xs text-muted-foreground">
                       {item.type === "created" && "Subscription started"}
                       {item.type === "renewed" && "Subscription renewing"}
-                      {item.type === "expires" && "Subscription expires"}
                       {" • "}
                       {dayjs(item.date).format("MMM DD, YYYY")}
                     </Text>
@@ -269,14 +275,8 @@ const Insights = () => {
                     ${item.amount.toFixed(2)}
                   </Text>
                 </View>
-              )}
-              keyExtractor={(item) => item.id}
-              ListEmptyComponent={
-                <Text className="text-center text-muted-foreground">
-                  No activity yet
-                </Text>
-              }
-            />
+              ))
+            )}
           </View>
         </View>
       </ScrollView>

@@ -1,8 +1,7 @@
 import { icons } from "@/constants/icons";
 import { clsx } from "clsx";
 import dayjs from "dayjs";
-import { styled } from "nativewind";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
     KeyboardAvoidingView,
     Modal,
@@ -13,8 +12,6 @@ import {
     TextInput,
     View,
 } from "react-native";
-
-const SafeAreaView = styled(View);
 
 const CATEGORY_OPTIONS = [
   "Entertainment",
@@ -60,23 +57,35 @@ const CreateSubscriptionModal: React.FC<CreateSubscriptionModalProps> = ({
     price?: string;
   }>({});
 
-  const isFormValid = useMemo(() => {
+  // Validate form without side effects
+  const validateForm = (
+    nameValue: string,
+    priceValue: string,
+  ): { name?: string; price?: string } => {
     const newErrors: { name?: string; price?: string } = {};
 
-    if (!name.trim()) {
+    if (!nameValue.trim()) {
       newErrors.name = "Name is required";
     }
 
-    const priceNum = Number.parseFloat(price);
-    if (!price.trim()) {
+    const priceNum = Number.parseFloat(priceValue);
+    if (!priceValue.trim()) {
       newErrors.price = "Price is required";
     } else if (Number.isNaN(priceNum) || priceNum <= 0) {
       newErrors.price = "Price must be a positive number";
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
+  };
+
+  // Update errors when name or price changes
+  useEffect(() => {
+    setErrors(validateForm(name, price));
   }, [name, price]);
+
+  const isFormValid = useMemo(() => {
+    return Object.keys(errors).length === 0;
+  }, [errors]);
 
   const handleSubmit = () => {
     if (!isFormValid) {

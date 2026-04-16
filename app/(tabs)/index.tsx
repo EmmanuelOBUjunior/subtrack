@@ -36,7 +36,7 @@ export default function App() {
   const handleSubscriptionPress = (id: string, name: string) => {
     setExpandedSubscriptionId((currentId) => {
       const isExpanding = currentId !== id;
-      if (isExpanding) {
+      if (isExpanding && posthog) {
         posthog.capture("subscription_card_expanded", {
           subscription_id: id,
           subscription_name: name,
@@ -51,11 +51,13 @@ export default function App() {
       newSubscription,
       ...prevSubscriptions,
     ]);
-    posthog.capture("subscription_created", {
-      subscription_id: newSubscription.id,
-      subscription_name: newSubscription.name,
-      category: newSubscription.category,
-    });
+    if (posthog) {
+      posthog.capture("subscription_created", {
+        subscription_id: newSubscription.id,
+        subscription_name: newSubscription.name,
+        category: newSubscription.category,
+      });
+    }
   };
 
   return (

@@ -3,9 +3,14 @@ import { posthog } from "@/libs/posthog";
 import { ClerkProvider } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, useGlobalSearchParams, usePathname } from "expo-router";
-import { useEffect, useRef } from "react";
+import {
+  SplashScreen,
+  Stack,
+  useGlobalSearchParams,
+  usePathname,
+} from "expo-router";
 import { PostHogProvider } from "posthog-react-native";
+import { useEffect, useRef } from "react";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -37,9 +42,18 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (previousPathname.current !== pathname) {
+      // Sanitize params to avoid leaking sensitive data
+      const allowedKeys = new Set(["id", "tab"]);
+      const sanitizedParams: Record<string, unknown> = {};
+      Object.entries(params).forEach(([key, value]) => {
+        if (allowedKeys.has(key)) {
+          sanitizedParams[key] = value;
+        }
+      });
+
       posthog.screen(pathname, {
         previous_screen: previousPathname.current ?? null,
-        ...params,
+        ...sanitizedParams,
       });
       previousPathname.current = pathname;
     }
@@ -56,7 +70,10 @@ export default function RootLayout() {
         propsToCapture: ["testID"],
       }}
     >
-      <ClerkProvider publishableKey={publishableKey as string} tokenCache={tokenCache}>
+      <ClerkProvider
+        publishableKey={publishableKey as string}
+        tokenCache={tokenCache}
+      >
         <Stack screenOptions={{ headerShown: false }} />
       </ClerkProvider>
     </PostHogProvider>

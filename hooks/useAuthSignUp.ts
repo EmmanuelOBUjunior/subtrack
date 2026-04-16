@@ -1,6 +1,6 @@
-import { getClerkErrorMessage } from "@/libs/validation";
 import { posthog } from "@/libs/posthog";
-import { useAuth, useSignUp } from "@clerk/expo";
+import { getClerkErrorMessage } from "@/libs/validation";
+import { useSignUp } from "@clerk/expo";
 import { type Href, useRouter } from "expo-router";
 import { useState } from "react";
 
@@ -16,7 +16,6 @@ export interface SignUpState {
 
 export const useAuthSignUp = () => {
   const { signUp } = useSignUp();
-  const { isSignedIn } = useAuth();
   const router = useRouter();
   const [state, setState] = useState<SignUpState>({
     email: "",
@@ -41,8 +40,17 @@ export const useAuthSignUp = () => {
   const submitSignUp = async (email: string, password: string) => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
+    if (!signUp) {
+      setState((prev) => ({
+        ...prev,
+        error: "Sign up service is not available",
+        isLoading: false,
+      }));
+      return false;
+    }
+
     try {
-      const { error } = await signUp?.password({
+      const { error } = await signUp.password({
         emailAddress: email,
         password,
       });
@@ -54,7 +62,7 @@ export const useAuthSignUp = () => {
       }
 
       // Send verification email
-      await signUp?.verifications.sendEmailCode();
+      await signUp.verifications.sendEmailCode();
       setState((prev) => ({
         ...prev,
         pendingVerification: true,
@@ -71,11 +79,20 @@ export const useAuthSignUp = () => {
   const verifyEmail = async (code: string) => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
+    if (!signUp) {
+      setState((prev) => ({
+        ...prev,
+        error: "Sign up service is not available",
+        isLoading: false,
+      }));
+      return false;
+    }
+
     try {
-      await signUp?.verifications.verifyEmailCode({ code });
+      await signUp.verifications.verifyEmailCode({ code });
 
       // Complete sign-up and finalize session
-      if (signUp?.status === "complete") {
+      if (signUp.status === "complete") {
         const userId = signUp.createdUserId ?? state.email;
 
         posthog.identify(userId, {
@@ -111,8 +128,16 @@ export const useAuthSignUp = () => {
   };
 
   const resetCode = async () => {
+    if (!signUp) {
+      setState((prev) => ({
+        ...prev,
+        error: "Sign up service is not available",
+      }));
+      return;
+    }
+
     try {
-      await signUp?.verifications.sendEmailCode();
+      await signUp.verifications.sendEmailCode();
       setState((prev) => ({ ...prev, error: null }));
     } catch (err) {
       const errorMsg = getClerkErrorMessage(err);
@@ -126,6 +151,5 @@ export const useAuthSignUp = () => {
     submitSignUp,
     verifyEmail,
     resetCode,
-    isSignedIn,
   };
 };
