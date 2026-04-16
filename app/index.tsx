@@ -15,7 +15,7 @@ export default function RootIndex() {
   }
 
   if (!isSignedIn) {
-    return <Redirect href="/(auth)/sign-in" />;
+    return <Redirect href="/onboarding" />;
   }
 
   return <Redirect href="/(tabs)" />;

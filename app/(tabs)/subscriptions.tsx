@@ -53,7 +53,7 @@ const Subscription = () => {
               />
             </View>
           )}
-          ListEmptyState={
+          ListEmptyComponent={
             <View className="flex-1 items-center justify-center py-10">
               <Text className="text-gray-500">No subscriptions found</Text>
             </View>
